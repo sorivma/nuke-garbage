@@ -181,12 +181,6 @@ const roadGeoJson = {
 
 const geoJson = new GeoJSON();
 
-const style = new Style({
-    fill: new Fill({
-        color: '#911d1d',
-    }),
-});
-
 
 function buildingsStyleFunction(feature) {
     return new Style({
