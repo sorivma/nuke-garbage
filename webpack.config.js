@@ -24,8 +24,8 @@ module.exports = {
                 use: ["style-loader", "css-loader"],
             },
             {
-                test: /\.json$/,
-                use: 'json-loader'
+                test: /\.svg$/,
+                loader: 'svg-inline-loader'
             }
         ],
     },

@@ -3,20 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Карта</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="public/style/style.css">
 </head>
 <body>
 <div id="map" class="map"></div>
-<form>
-    <label for="type">Action type &nbsp;</label>
-    <select id="type">
-        <option value="click" selected>Click</option>
-        <option value="singleclick">Single-click</option>
-        <option value="pointermove">Hover</option>
-        <option value="altclick">Alt+Click</option>
-        <option value="none">None</option>
-    </select>
-    <span id="status">&nbsp;0 selected features</span>
-</form>
+<div id="card" class="card card-hidden">
+    <h2>Наименование</h2>
+    <p id="garbage_name"></p>
+    <h2>Класс опасности</h2>
+    <p id="hazard_lvl"></p>
+    <h2>Ответственное подразделение</h2>
+    <p id="division"></p>
+    <h2>Код</h2>
+    <p id="code"></p>
+</div>
 </body>
 </html>

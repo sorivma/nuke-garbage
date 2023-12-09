@@ -1,12 +1,13 @@
 import Map from 'ol/Map';
 import Select from 'ol/interaction/Select';
 import View from 'ol/View';
-import {Fill, Stroke, Style} from 'ol/style';
-import {altKeyOnly, click, pointerMove} from 'ol/events/condition';
-import {getLayers} from "./layers"
+import {getGarbageLayer, getLayers} from "./layers"
 
-import './style.css'
-
+import './public/style/style.css'
+import 'ol-ext/dist/ol-ext.min.css'
+import SearchFeature from "ol-ext/control/SearchFeature";
+import {hide_card, initialize_card, show_card} from "./card";
+import zoom from "ol-ext/featureanimation/Zoom";
 
 const map = new Map({
     layers: getLayers(),
@@ -14,85 +15,66 @@ const map = new Map({
     view: new View({
         center: [1471.537389, -1155.5016903],
         zoom: 15,
+        maxResolution: 2.0412021106780145,
+        minResolution: 0.10125644930531218,
     }),
+    controls: []
 });
 
-let select = null; // ref to currently selected interaction
-
-const selected = new Style({
-    fill: new Fill({
-        color: '#382e2e',
-    }),
-    stroke: new Stroke({
-        color: '#e57d7d',
-        width: 2,
-    }),
-});
-
-function selectStyle(feature) {
-    const color = feature.get('COLOR') || '#ffffff';
-    selected.getFill().setColor(color);
-    return selected;
+function getTitleString(feature) {
+    let searched = feature.get("division") + " " + feature.get("containmt")
+    return (searched)
 }
 
-// select interaction working on "singleclick"
-const selectSingleClick = new Select({style: selectStyle});
+function getSearchString(feature) {
+    let searched = +feature.get("code") + " " + feature.get("division") + " " + feature.get("containmt")
+    return (searched)
+}
 
-// select interaction working on "click"
-const selectClick = new Select({
-    condition: click,
-    style: selectStyle,
+let search = new SearchFeature({
+    placeholder: 'Поиск',
+    source: getGarbageLayer().getSource(),
+    maxItems: 20,
+    getTitle: getTitleString,
+    getSearchString: getSearchString
+})
+
+let select = new Select({
+    layers: [getGarbageLayer()]
+})
+map.addInteraction(select)
+
+
+
+select.on('select', function (e) {
+    if (select.getFeatures().getLength() > 0) {
+        let selected_feature = select.getFeatures().item(0)
+        initialize_card(selected_feature)
+        map.getView().animate({center: selected_feature.getGeometry().getFirstCoordinate()})
+        const zoom = map.getView().getZoom()
+        if (zoom < 3) {
+            map.getView().animate({zoom: 3})
+        }
+        show_card()
+        return
+    }
+    hide_card()
+})
+
+search.on('select', function (e) {
+    select.getFeatures().clear();
+    select.getFeatures().push(e.search);
+    initialize_card(select.getFeatures().item(0))
+    show_card()
+    let p = e.search.getGeometry().getFirstCoordinate();
+    map.getView().animate({center: p})
+    const zoom = map.getView().getZoom()
+    if (zoom < 3) {
+        map.getView().animate({zoom: 3})
+    }
 });
 
-// select interaction working on "pointermove"
-const selectPointerMove = new Select({
-    condition: pointerMove,
-    style: selectStyle,
-});
+map.addControl(search)
 
-const selectAltClick = new Select({
-    style: selectStyle,
-    condition: function (mapBrowserEvent) {
-        return click(mapBrowserEvent) && altKeyOnly(mapBrowserEvent);
-    },
-});
 
-const selectElement = document.getElementById('type');
 
-const changeInteraction = function () {
-    if (select !== null) {
-        map.removeInteraction(select);
-    }
-    const value = selectElement.value;
-    if (value === 'singleclick') {
-        select = selectSingleClick;
-    } else if (value === 'click') {
-        select = selectClick;
-    } else if (value === 'pointermove') {
-        select = selectPointerMove;
-    } else if (value === 'altclick') {
-        select = selectAltClick;
-    } else {
-        select = null;
-    }
-    if (select !== null) {
-        map.addInteraction(select);
-        select.on('select', function (e) {
-            document.getElementById('status').innerHTML =
-                '&nbsp;' +
-                e.target.getFeatures().getLength() +
-                ' selected features (last operation selected ' +
-                e.selected.length +
-                ' and deselected ' +
-                e.deselected.length +
-                ' features)';
-            console.log(e.selected.length)
-        });
-    }
-};
-
-/**
- * onchange callback on the select element.
- */
-selectElement.onchange = changeInteraction;
-changeInteraction();

@@ -2,6 +2,9 @@
   "name": "nuke-garbage",
   "version": "1.0.0",
   "description": "",
+  "styles": [
+    "node_modules/ol-ext/dist/ol-ext.css"
+  ],
   "main": "app.js",
   "scripts": {
     "start": "webpack-dev-server --mode development --open",
@@ -11,16 +14,20 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "clean-webpack-plugin": "^4.0.0",
     "css-loader": "^6.8.1",
+    "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.3",
     "json-loader": "^0.5.7",
     "style-loader": "^3.3.3",
+    "svg-inline-loader": "^0.8.2",
     "webpack": "^5.89.0",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1"
   },
   "dependencies": {
-    "clean-webpack-plugin": "^4.0.0",
-    "ol": "^8.1.0"
+    "mongodb": "^6.3.0",
+    "ol": "^8.1.0",
+    "ol-ext": "^4.0.13"
   }
 }
