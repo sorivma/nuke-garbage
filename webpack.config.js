@@ -9,7 +9,14 @@ module.exports = {
         path: path.resolve(__dirname, "public")
     },
     devServer: {
-        port: 3000
+        port: 3000,
+        proxy: {
+            '/buildings': 'http://localhost:8080',
+            '/channel': 'http://localhost:8080',
+            '/garbage': 'http://localhost:8080',
+            '/roads': 'http://localhost:8080',
+
+        },
     },
     plugins: [
         new HTMLPlugin({
@@ -29,5 +36,4 @@ module.exports = {
             }
         ],
     },
-
 }

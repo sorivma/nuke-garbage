@@ -7,7 +7,7 @@ import './public/style/style.css'
 import 'ol-ext/dist/ol-ext.min.css'
 import SearchFeature from "ol-ext/control/SearchFeature";
 import {hide_card, initialize_card, show_card} from "./card";
-import zoom from "ol-ext/featureanimation/Zoom";
+import {log} from "ol/console";
 
 const map = new Map({
     layers: getLayers(),
@@ -75,6 +75,5 @@ search.on('select', function (e) {
 });
 
 map.addControl(search)
-
-
-
+await getLayers().at(0);
+log(getLayers().at(0).getFeatures())
