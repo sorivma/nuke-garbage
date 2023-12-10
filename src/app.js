@@ -13,8 +13,8 @@ const map = new Map({
     layers: getLayers(),
     target: 'map',
     view: new View({
-        center: [1471.537389, -1155.5016903],
-        zoom: 15,
+        center: [2000, -1000],
+        zoom: 0.5,
         maxResolution: 2.0412021106780145,
         minResolution: 0.10125644930531218,
     }),
