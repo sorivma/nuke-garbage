@@ -15,7 +15,8 @@ module.exports = {
             '/channel': 'http://localhost:8080',
             '/garbage': 'http://localhost:8080',
             '/roads': 'http://localhost:8080',
-
+            '/static/index': 'http://localhost:8080',
+            '/files/*': 'http://localhost:8080'
         },
     },
     plugins: [

@@ -38,18 +38,15 @@ const geoJson = new GeoJSON();
 function buildingsStyleFunction(feature) {
     return new Style({
         fill: new Fill({
-            color: "grey"
+            color: "#d1d1d1"
         }),
         stroke: new Stroke({
-            color: "black"
+            color: "#646464"
         }),
         text: new Text({
             text: feature.get("name"),
             font: '15px sans-serif',
             fill: new Fill({
-                color: 'white'
-            }),
-            stroke: new Stroke({
                 color: 'black'
             }),
         })
@@ -60,6 +57,8 @@ const buildings_layer = new VectorLayer({
     source: new VectorSource({
         features: geoJson.readFeatures(buildingsGeoJson)
     }),
+    updateWhileAnimating: true,
+    updateWhileInteracting: true,
     style : buildingsStyleFunction
 });
 
@@ -74,7 +73,9 @@ const channel_layer = new VectorLayer({
         stroke: new Stroke({
             color: "rgba(104,213,217,0.66)"
         })
-    })
+    }),
+    updateWhileAnimating: true,
+    updateWhileInteracting: true,
 });
 
 const road_layer = new VectorLayer({
@@ -83,12 +84,14 @@ const road_layer = new VectorLayer({
     }),
     style: new Style({
         fill: new Fill({
-            color: "#c0c0c0"
+            color: "#edf5f5"
         }),
         stroke: new Stroke({
-            color: "#c0c0c0"
+            color: "#eef6f6"
         }),
-    })
+    }),
+    updateWhileAnimating: true,
+    updateWhileInteracting: true,
 });
 
 

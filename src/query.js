@@ -1,3 +1,5 @@
+const {error} = require("ol/console");
+
 async function getFeature(endpoint) {
     let buildings;
     return buildings = fetch(endpoint)
@@ -5,4 +7,11 @@ async function getFeature(endpoint) {
         .catch(error => console.error('Error:', error))
 }
 
-module.exports = {getFeature}
+async function getDocumentsIndex(endpoint) {
+    let documents;
+    return documents = fetch(endpoint)
+        .then(response => response.json())
+        .catch(error => console.error('Error') , error)
+}
+
+module.exports = {getFeature, getDocumentsIndex}
