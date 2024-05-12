@@ -28,11 +28,12 @@ body {
     top: 0;
     width: 500px;
     height: 100%;
-    background: white;
+    background: whitesmoke;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     border-radius: 0 0 0 10px;
     padding: 90px 20px 20px 25px;
     transition: 1s;
+
 }
 
 .card-hidden {
@@ -42,14 +43,14 @@ body {
 
 .search-container {
     margin-top: 10px;
-    margin-left: 10px;
+    margin-left: 15px;
     z-index: 3;
     position: absolute;
-    background-color: white;
+    background-color: transparent;
 }
 
 .search {
-    background-color: white;
+    background-color: transparent;
     border: none;
 }
 
@@ -57,13 +58,40 @@ body {
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     width: 500px;
     height: 50px;
-    padding-left: 10px;
+    padding-left: 60px;
+    padding-right: 15px;
     font-size: 20px;
+    border-radius: 15px;
+    background-color: white;
 }
 
 .search ul {
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
+    margin-top: -20px;
+    padding: 30px 15px 15px 15px;
+    list-style: none;
+    border-radius: 15px;
+
+    max-width: 470px;
     background-color: white;
-    max-width: 300px;
+}
+
+.search ul li {
+    font-size: 20px;
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 15px;
+
+    cursor: pointer;
+}
+
+.search ul li:hover {
+    background-color: #e8e8e8;
+}
+
+.search ul:empty {
+    display: none;
 }
 
 .controls-container {
@@ -72,7 +100,7 @@ body {
 
 .toggle-card-btn {
     position: absolute;
-    width: 30px;
+    width: 40px;
     height: 50px;
 
     margin-top: 10px;
@@ -81,10 +109,12 @@ body {
     background-color: whitesmoke;
     border: none;
 
+    border-radius: 15px;
+
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
-.toggle-card-btn:hover {
+.hover-effect:hover {
     background-color: #e8e8e8;
 }
 
@@ -130,6 +160,19 @@ body {
     padding: 10px 10px 10px 15px;
     border-radius: 15px;
     margin-top: 5px;
+    background-color: white
+}
+
+.rosatom-container {
+    position: absolute;
+    top: 28px;
+    left: 35px;
+    z-index: 1000000;
+    pointer-events: none;
+}
+
+.rosatom-container svg {
+    pointer-events: none;
 }
 
 svg {

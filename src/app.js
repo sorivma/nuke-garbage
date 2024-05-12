@@ -1,7 +1,7 @@
 import Map from 'ol/Map';
 import Select from 'ol/interaction/Select';
 import View from 'ol/View';
-import {getGarbageLayer, getLayers} from "./layers"
+import {getGarbageLayer, getLayers, getPlacesLayer} from "./layers"
 
 import './public/style/style.css'
 import 'ol-ext/dist/ol-ext.min.css'
@@ -55,11 +55,37 @@ let search = new SearchFeature({
 let select = new Select({
     layers: [getGarbageLayer()]
 })
+
+let placesSelect = new Select({
+    layers: [getPlacesLayer()]
+})
+
 map.addInteraction(select)
+map.addInteraction(placesSelect)
+
+placesSelect.on('select', function (e) {
+    if (placesSelect.getFeatures().getLength() > 0) {
+        setDimension("places")
+        prepare_places(search)
+        let selected_feature = placesSelect.getFeatures().item(0)
+        console.log(selected_feature)
+        initialize_card(selected_feature)
+
+        map.getView().animate({center: selected_feature.getGeometry().getFirstCoordinate()})
+        const zoom = map.getView().getZoom()
+
+        if (zoom < 3) {
+            map.getView().animate({zoom: 3})
+        }
+        show_card()
+    }
+    // hide_card()
+})
 
 select.on('select', function (e) {
     if (select.getFeatures().getLength() > 0) {
         setDimension('garbage')
+        prepare_garbage(search)
         let selected_feature = select.getFeatures().item(0)
         initialize_card(selected_feature)
 
@@ -69,13 +95,12 @@ select.on('select', function (e) {
             map.getView().animate({zoom: 3})
         }
         show_card()
-        return
     }
-    hide_card()
+    // hide_card()
 })
 
 search.on('select', function (e) {
-    if (getDimension() === 'garbage') {
+    if (getDimension() === 'garbage' || getDimension() === 'places') {
         search.clearHistory()
         select.getFeatures().clear();
         select.getFeatures().push(e.search);
@@ -87,10 +112,6 @@ search.on('select', function (e) {
         if (zoom < 3) {
             map.getView().animate({zoom: 3})
         }
-    } else if (getDimension() === 'places') {
-        search.clearHistory()
-        initialize_card(e.search.getProperties())
-        show_card()
     } else if (getDimension() === 'people') {
         search.clearHistory()
         initialize_card(e.search.getProperties())

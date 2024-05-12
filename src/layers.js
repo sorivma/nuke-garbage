@@ -8,29 +8,36 @@ import {getFeature} from "./query";
 const buildingsGeoJson = {
     "type": "FeatureCollection",
     "name": "build",
-    "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+    "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:OGC:1.3:CRS84"}},
     "features": await getFeature("/buildings")
 }
 
 const channelGeoJson = {
     "type": "FeatureCollection",
     "name": "channel_layer",
-    "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+    "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:OGC:1.3:CRS84"}},
     "features": await getFeature("/channel")
 }
 
 const roadGeoJson = {
     "type": "FeatureCollection",
     "name": "road_layer",
-    "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+    "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:OGC:1.3:CRS84"}},
     "features": await getFeature("/roads")
 }
 
 const garbageGeoJson = {
     "type": "FeatureCollection",
     "name": "garbage",
-    "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+    "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:OGC:1.3:CRS84"}},
     "features": await getFeature("/garbage")
+}
+
+const placeGeoJson = {
+    "type": "FeatureCollection",
+    "name": "garbage",
+    "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:OGC:1.3:CRS84"}},
+    "features": await getFeature("/places")
 }
 
 const geoJson = new GeoJSON();
@@ -53,13 +60,27 @@ function buildingsStyleFunction(feature) {
     })
 }
 
+const places_layer = new VectorLayer({
+    source: new VectorSource({
+        features: geoJson.readFeatures(placeGeoJson)
+    }),
+    style: new Style({
+        fill: new Fill({
+            color: "rgba(255, 255, 255, 0.23)"
+        }),
+        stroke: new Stroke({
+            color: 'rgba(255, 255, 255, 0.63)'
+        })
+    })
+})
+
 const buildings_layer = new VectorLayer({
     source: new VectorSource({
         features: geoJson.readFeatures(buildingsGeoJson)
     }),
     updateWhileAnimating: true,
     updateWhileInteracting: true,
-    style : buildingsStyleFunction
+    style: buildingsStyleFunction
 });
 
 const channel_layer = new VectorLayer({
@@ -100,7 +121,7 @@ function garbageStyleFunction(feature, resolution) {
         image: new Icon({
             opacity: 1,
             src: mapToSvg(feature.get("strg_type")),
-            scale: 1 / (resolution * 100)
+            scale: 1 / (resolution * 100),
         })
     });
 }
@@ -115,12 +136,15 @@ const garbage_layer = new VectorLayer({
 })
 
 
-
 export function getLayers() {
-    return [buildings_layer, channel_layer, road_layer, garbage_layer]
+    return [buildings_layer, channel_layer, road_layer, garbage_layer, places_layer]
 }
 
 export function getGarbageLayer() {
     return garbage_layer;
+}
+
+export function getPlacesLayer() {
+    return places_layer;
 }
 
